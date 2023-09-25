@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
+import { postUrl } from '../../apiCalls';
 
-function UrlForm() {
+function UrlForm({setUrls, urls}) {
   const [title, setTitle] = useState('');
   const [urlToShorten, setUrlToShorten] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
+    const urlObject = formatPostObject()
+    postUrl(urlObject)
+    .then(data => {
+      setUrls([...urls, data])
+    }).catch(err => console.log(err))
     clearInputs();
+  }
+
+  const formatPostObject = () => {
+    return {
+      long_url: urlToShorten,
+      title: title
+    }
   }
 
   const clearInputs = () => {
@@ -21,15 +34,15 @@ function UrlForm() {
         placeholder='Title...'
         name='title'
         value={title}
-        // onChange={e => }
+        onChange={e => setTitle(e.target.value)}
       />
 
       <input
         type='text'
         placeholder='URL to Shorten...'
-        name='title'
-        value={title}
-        // onChange={e => }
+        name='urlToShorten'
+        value={urlToShorten}
+        onChange={e => setUrlToShorten(e.target.value)}
       />
 
       <button onClick={e => handleSubmit(e)}>

@@ -8,17 +8,18 @@ function App () {
   const [urls, setUrls] = useState([]);
 
   useEffect(() => {
-
-  })
+    getUrls()
+    .then(data => setUrls(data.urls))
+    .catch(err => console.log(err))
+  }, [])
 
   return (
     <main className="App">
       <header>
         <h1>URL Shortener</h1>
-        <UrlForm />
+        <UrlForm urls={urls} setUrls={setUrls} />
       </header>
-
-      <UrlContainer urls={"<<<Urls should go here>>>"}/>
+      <UrlContainer urls={urls}/>
     </main>
   );
 }
